@@ -1,5 +1,5 @@
 
-#include<Ticker.h>
+#include <Ticker.h>
 const int signalA_LED=15;
 const int signalB_LED=21;
 const int input_button = 23;
@@ -14,14 +14,12 @@ void setup() {
   pinMode(signalA_LED, OUTPUT); 
   pinMode(signalB_LED, OUTPUT);
   pinMode(input_button, INPUT);
-  myTick.attach_ms(1,myTickPrint);
+  myTick.attach_ms(1,myCycle);
 }
 void loop(){
   
 }
-void myTickPrint(){
-  Serial.print("printing");
-}
+
 void myCycle(){ 
   counter++;
   digitalWrite(signalB_LED, HIGH);
@@ -37,12 +35,8 @@ void myCycle(){
 
 void task2(){
   input_button_state= digitalRead(input_button);
-  if (input_button_state = HIGH){
-    for (int i=0;i<5;i++)
-      digitalWrite(signalA_LED,HIGH);
-      delay(200);
-      digitalWrite(signalA_LED,LOW);
-  }
+  //if (input_button_state = HIGH){]
+   
 }
 
 
