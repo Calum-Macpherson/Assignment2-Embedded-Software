@@ -18,6 +18,7 @@ void setup() {
   pinMode(signalA_LED, OUTPUT); 
   pinMode(signalB_LED, OUTPUT);
   pinMode(input_button, INPUT);
+  pinMode(input_V,INPUT);
   myTick.attach_ms(1,myCycle);
 }
 void loop(){
@@ -53,31 +54,48 @@ void task2(){
 void task3(){
   
 }
-void task4(){
+float task4(){
   pot_val = digitalRead(input_V);
-  //Serial.print(pot_val);
+  //return pot_val;
+  Serial.print(pot_val);
 }
-void task5(){
-  filtered_val=0;
+float task5(){
+  //filtered_val=0;
+  //float v_values[]={0,0,0,0};
   for(int i=0;i<4;i++){
+    //v_values[i] =analogRead(input_V);
     v_values[i]=pot_val;
   }
+  //total=0;
   for(int j=0;j<4;j++){
-    total +=v_values[j];
+    total +=v_values[j];    
   }
+  return total;
   filtered_val=(total/4);  
+  //return filtered_val;
 }
 void task6(){
   for (int j=0;j<1000;j++){
     __asm__ __volatile__ ("nop");
-  }
-  
+  } 
 }
+//void task7(){
+ // if (filtered_val >(3.3/2));
+  //  error_code = 1
+  //else:
+   // error_code = 0
+//}
+//void task8(){
+  
+//}
+
 void task9(){
   int first = input_button_state;
   String second = "hi";
-  Serial.println(first );
-  Serial.println(second);
-  Serial.println(total);
+  Serial.print(input_button_state);
+  Serial.print (",");
+  Serial.print(total);
+  Serial.print (",");
+  Serial.println(filtered_val);
   
 }
