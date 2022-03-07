@@ -1,7 +1,7 @@
 #include <Ticker.h>
 const int signalA_LED=15;
 const int signalB_LED=21;
-const int input_V = 19;
+const int input_V = 2;
 int pot_val=0;
 float v_values[4];
 float total=0;
@@ -55,9 +55,9 @@ void task3(){
   
 }
 float task4(){
-  pot_val = digitalRead(input_V);
+  pot_val = analogRead(input_V);
   //return pot_val;
-  Serial.print(pot_val);
+  //Serial.print(pot_val);
 }
 float task5(){
   //filtered_val=0;
@@ -72,7 +72,7 @@ float task5(){
   }
   return total;
   filtered_val=(total/4);  
-  //return filtered_val;
+  return filtered_val;
 }
 void task6(){
   for (int j=0;j<1000;j++){
