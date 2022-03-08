@@ -1,11 +1,21 @@
-
 #include <Ticker.h>
 const int signalA_LED=15;
 const int signalB_LED=21;
+const int input_V = 2;
+int inputV_task3=5;
+unsigned  long duration;
+unsigned long freq;
+unsigned long periodms;
+unsigned long periods;
+int pot_val=0;
+float v_values[4];
+float total=0;
+float filtered_val=0;
 const int input_button = 23;
 int input_button_state = 0;
 const int no_of_tasks = 8;
 int counter =0;
+int error_code=0;
 
 Ticker myTick;
 
@@ -14,6 +24,8 @@ void setup() {
   pinMode(signalA_LED, OUTPUT); 
   pinMode(signalB_LED, OUTPUT);
   pinMode(input_button, INPUT);
+  pinMode(input_V,INPUT);
+  pinMode(inputV_task3,INPUT);
   myTick.attach_ms(1,myCycle);
 }
 void loop(){
@@ -31,6 +43,17 @@ void myCycle(){
   if (counter%1000==0){
     task3();
   }
+  if(counter%42==0){
+    task4();
+    task5();
+  }
+  if (counter%100==0){
+    task6();
+  }
+  if (counter%300==0){
+    task7();
+    task8();
+  }
   if (counter%5000==0){
     task9();
   }
@@ -42,29 +65,59 @@ void task2(){
   //if (input_button_state = HIGH){]
   //Serial.print(input_button_state);
 }
-void task3(){
-  
+unsigned long task3(){
+  duration=pulseIn(inputV_task3,HIGH);
+  periodms = (duration*2);
+  periods=pow(periodms * 10, -6);
+  freq=(1/periods);
+  Serial.println(periods);
+  Serial.println(duration);
+  Serial.println(freq);
 }
-void task4(){
-  
+float task4(){
+  pot_val = analogRead(input_V);
+  return pot_val;
+  //Serial.print(pot_val);
 }
-void task5(){
+float task5(){
+  total=0;
+  for(int j=0;j<4;j++){
+    v_values[j]=pot_val;
+    total +=v_values[j];    
+  }
+  filtered_val=(total/4);  
+  return total;
+  return filtered_val;
   
 }
 void task6(){
   for (int j=0;j<1000;j++){
     __asm__ __volatile__ ("nop");
-  }
-  
+  } 
 }
-void task9(){
-  int first = input_button_state;
-  String second = "hi";
-  String third = "hello";
-  Serial.println(first );
-  Serial.println(second);
-  Serial.println(third );
-  
+void task7(){
+  if (filtered_val >(800/2)){
+    error_code = 1;
+  }
+  else{
+    error_code = 0;
+  }
+  //return error_code;
+}
+void task8(){
+  if (error_code=1){
+    digitalWrite(signalA_LED, HIGH);
+  }
+  else{
+    digitalWrite(signalA_LED, LOW);
+  }
 }
 
- 
+void task9(){
+  Serial.print(input_button_state);
+  Serial.print (",    ");
+  Serial.print(pot_val);
+  Serial.print (",    ");
+  Serial.println(filtered_val);
+  
+}
