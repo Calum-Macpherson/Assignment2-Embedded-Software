@@ -1,6 +1,8 @@
 #include <Ticker.h>
+//Below I have intitialised the global variables used throughout the code
 const int signalA_LED=15;
 const int signalB_LED=21;
+const int signal_check =16;
 const int input_V = 2;
 int inputV_task3=5;
 unsigned  long duration;
@@ -15,44 +17,58 @@ const int no_of_tasks = 8;
 int counter =0;
 boolean error_code=0;
 
-Ticker myTick;
+Ticker myTick; // Initialises the ticker
 
 void setup() {
   Serial.begin(9600);
   pinMode(signalA_LED, OUTPUT); 
   pinMode(signalB_LED, OUTPUT);
+  pinMode(signal_check, OUTPUT);
   pinMode(input_button, INPUT);
   pinMode(input_V,INPUT);
   pinMode(inputV_task3,INPUT);
-  myTick.attach_ms(1,myCycle);
+  myTick.attach_ms(4,myCycle);//Ticker set up to "tick"  every 4ms to accomodate for a worse case scenario
 }
 void loop(){
   
 }
 
 void myCycle(){ 
-  counter++;
+  counter++;//increments the counter each time the cycle is ran
   digitalWrite(signalB_LED, HIGH);
   delayMicroseconds(50);
   digitalWrite(signalB_LED,LOW);
-  if (counter%200==0){ 
+  /*
+  The counter values below have been calculated by dividing the
+  original periods by 4, since the ticker "ticks" every 4ms.
+  */
+  
+  if (counter%50==0){ 
     task2();
   }
-  if (counter%1000==0){
+  if (counter%250==0){
+    //digitalWrite(signal_check,HIGH);
     task3();
+    //digitalWrite(signal_check,LOW);
   }
-  if(counter%42==0){
+  if(counter%11==0){
+    //digitalWrite(signal_check,HIGH);
     task4();
+    //digitalWrite(signal_check,LOW);
+  }
+  if(counter%11==1){
     task5();
   }
-  if (counter%100==0){
+  if (counter%25==0){
     task6();
   }
-  if (counter%300==0){
+  if (counter%75==0){
     task7();
+  }
+  if (counter%75==1){
     task8();
   }
-  if (counter%5000==0){
+  if (counter%1250==0){
     task9();
   }
 }
@@ -60,8 +76,6 @@ void myCycle(){
 
 void task2(){
   input_button_state= digitalRead(input_button);
-  //if (input_button_state = HIGH){]
-  //Serial.print(input_button_state);
 }
 unsigned long task3(){
   duration=pulseIn(inputV_task3,HIGH);
@@ -109,9 +123,9 @@ void task8(){
 
 void task9(){
   Serial.print(input_button_state);
-  Serial.print (",    ");
-  Serial.print(total);
-  Serial.print (",    ");
+  Serial.print (",  ");
+  Serial.print(freq);
+  Serial.print (",  ");
   Serial.println(filtered_val);
   
 }
