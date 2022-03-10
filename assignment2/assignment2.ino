@@ -5,8 +5,6 @@ const int input_V = 2;
 int inputV_task3=5;
 unsigned  long duration;
 unsigned long freq;
-unsigned long periodms;
-unsigned long periods;
 int pot_val=0;
 float v_values[4];
 float total=0;
@@ -15,7 +13,7 @@ const int input_button = 23;
 int input_button_state = 0;
 const int no_of_tasks = 8;
 int counter =0;
-int error_code=0;
+boolean error_code=0;
 
 Ticker myTick;
 
@@ -67,12 +65,8 @@ void task2(){
 }
 unsigned long task3(){
   duration=pulseIn(inputV_task3,HIGH);
-  periodms = (duration*2);
-  periods=pow(periodms * 10, -6);
-  freq=(1/periods);
-  Serial.println(periods);
-  Serial.println(duration);
-  Serial.println(freq);
+  freq=1/(duration*2*pow(10, -6));
+  //Serial.println(freq);
 }
 float task4(){
   pot_val = analogRead(input_V);
@@ -95,17 +89,17 @@ void task6(){
     __asm__ __volatile__ ("nop");
   } 
 }
-void task7(){
-  if (filtered_val >(800/2)){
+boolean task7(){
+  if (filtered_val >(4095/2)){
     error_code = 1;
   }
-  else{
+  else if (filtered_val<(4095/2)){
     error_code = 0;
   }
-  //return error_code;
+  return error_code;
 }
 void task8(){
-  if (error_code=1){
+  if (error_code==1){
     digitalWrite(signalA_LED, HIGH);
   }
   else{
@@ -116,7 +110,7 @@ void task8(){
 void task9(){
   Serial.print(input_button_state);
   Serial.print (",    ");
-  Serial.print(pot_val);
+  Serial.print(total);
   Serial.print (",    ");
   Serial.println(filtered_val);
   
