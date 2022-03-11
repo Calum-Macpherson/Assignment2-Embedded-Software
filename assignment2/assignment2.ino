@@ -51,14 +51,14 @@ void myCycle(){ //Calls each of the tasks
   if (counter%250==0){
     task3();
   }
-  if(counter%11==0){
+  if(counter%11==0){//As task 4 and task5 run at the same rate, I call them at the same time.
     task4();
     task5();
   }
   if (counter%25==0){
     task6();
   }
-  if (counter%75==0){
+  if (counter%75==0){//Like task 4 and 5, task 7 and 8 run at the same rate so call them at the same time.
     task7();
     task8();
   }
@@ -82,8 +82,8 @@ float task4(){
 float task5(){
   total=0;
   for(int j=0;j<4;j++){
-    v_values[j]=pot_val;
-    total +=v_values[j];    
+    v_values[j]=pot_val;//Fills the array
+    total +=v_values[j];//Sets the total value, to the 4 values in the array summed.    
   }
   filtered_val=(total/4);  
   return total;
@@ -113,7 +113,7 @@ void task8(){
 }
 void task9(){
   Serial.print(input_button_state);
-  Serial.print (",  ");
+  Serial.print (",  ");// The comma seperates each value that is being printed, making it  easier to read when looking at the serial monitor.
   Serial.print(freq);
   Serial.print (",  ");
   Serial.println(filtered_val);  
